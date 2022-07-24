@@ -26,3 +26,16 @@ Route::get('download/{id}',[\App\Http\Controllers\HomeController::class, 'downlo
 
 //approve orders by credit manager route
 Route::post('unapproved',[\App\Http\Controllers\ApproveOrders::class, 'creditManagerApproval'])->name('creditManagerApproval');
+Route::post('reverse',[\App\Http\Controllers\ApproveOrders::class, 'creditManagerReverse'])->name('creditManagerReverse');
+Route::get('approved',[\App\Http\Controllers\ApproveOrders::class, 'ApprovedC'])->name('approved');
+
+
+//approve orders by operations manager route
+Route::post('save',[\App\Http\Controllers\ApproveOrders::class, 'operationsManagerApproval'])->name('operationsManagerApproval');
+Route::post('reverseM',[\App\Http\Controllers\ApproveOrders::class, 'operationsManagerReverse'])->name('operationsManagerReverse');
+Route::get('approved_by_credit_manager',[\App\Http\Controllers\ApproveOrders::class, 'ApprovedO'])->name('approvedByOm');
+
+//allocations
+Route::post('allocate',[\App\Http\Controllers\ApproveOrders::class,'Allocate'])->name('procurementOfficerAllocate');
+Route::get('allocated-materials',[\App\Http\Controllers\ApproveOrders::class,'Allocated']);
+

@@ -47,7 +47,7 @@ class UsersController extends Controller
         $user->mobileno = "0";
         $user->save();
 
-        return redirect()->back()->with('success',"$request->firstname's account created successfully'");
+        return redirect()->back()->with('success',"$request->firstname's account created successfully");
     }
 
     public function show($id)
@@ -67,7 +67,7 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        User::where('id', $id)->delete();
+        User::where('user_id', $id)->delete();
         return redirect()->back()->with('success', 'User deleted successfully');
     }
 }

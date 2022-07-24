@@ -14,11 +14,11 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(customer::class);
+        return $this->belongsTo(customer::class,'customer_id');
     }
 
-    public function details()
-    {
-        return $this->hasMany(Order_detail::class);
+    public function creditManagerUser(){
+        return $this->belongsTo(User::class,'credit_manager');
     }
+
 }

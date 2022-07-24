@@ -11,11 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $primaryKey = 'user_id';
     protected $fillable = [
         'name',
         'email',
@@ -40,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function materials()
+    {
+        return $this->belongsToMany(Material::class,'material_allocation','user_id','material_id')->withPivot('amount');
+    }
 }

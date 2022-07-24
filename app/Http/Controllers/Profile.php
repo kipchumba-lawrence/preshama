@@ -29,7 +29,7 @@ class Profile extends Controller
             ],
         ]);
 
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->user_id);
         $user->password = Hash::make($request->password);
         $user->password_changed_at = now();
         $user->save();
@@ -54,9 +54,9 @@ class Profile extends Controller
 
     public function edit($id)
     {
-        if(Auth::user()->id == $id) {
+        if(Auth::user()->user_id == $id) {
             $user = User::find($id);
-        return view('admin.profile.edit', compact('user'));
+        return view('profile.edit', compact('user'));
         }
         else{
             return route('login');
@@ -88,7 +88,7 @@ class Profile extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('success',"Your account updated successfully'");
+        return redirect()->back()->with('success',"Your account updated successfully");
 
     }
 

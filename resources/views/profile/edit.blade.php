@@ -25,7 +25,7 @@
                         </div>
                         <h5>Fill in all fields</h5>
                         @include('includes.messages')
-                        <form method="post" action="{{ route('profile.update',Auth::user()->id) }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('profile.update',Auth::user()->user_id) }}" enctype="multipart/form-data">
                             {{csrf_field()}}
                             {{ method_field('PATCH') }}
                             <div class="form-row mb-4">

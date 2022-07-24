@@ -9,6 +9,7 @@ class customer extends Model
 {
     use HasFactory;
     protected $table = 'customer';
+    protected $primaryKey = 'customer_id';
 
     public function orders()
     {

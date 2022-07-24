@@ -31,14 +31,14 @@
                                 </thead>
                                 <tbody>
                                 @foreach($users as $user)
-                                    @if($user->id != Auth::user()->id)
+                                    @if($user->user_id != Auth::user()->user_id)
                                         <tr>
                                             <td>{{ $user->first_name }}</td>
                                             <td>{{ $user->surname }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->user_type }}</td>
                                             <td>
-                                                <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy',$user->id) }}" style="display: none;" method="post">
+                                                <form id="delete-form-{{ $user->user_id }}" action="{{ route('users.destroy',$user->user_id) }}" style="display: none;" method="post">
                                                     {{@csrf_field()}}
                                                     {{@method_field('DELETE')}}
                                                 </form>
@@ -46,7 +46,7 @@
                                                    onclick="
                                                        if(confirm('Are you sure you want to delete this user?'))
                                                        {event.preventDefault();
-                                                       document.getElementById('delete-form-{{ $user->id }}').submit();
+                                                       document.getElementById('delete-form-{{ $user->user_id }}').submit();
                                                        }
                                                        else{
                                                        event.preventDefault();
