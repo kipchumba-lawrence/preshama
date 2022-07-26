@@ -16,11 +16,7 @@ class ApproveOrders extends Controller
 
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            $this->user= Auth::user();
-
-            return $next($request);
-        });
+        $this->middleware('auth');
     }
 
     //approved by credit manager
@@ -118,9 +114,11 @@ class ApproveOrders extends Controller
     }
 
     public function Allocated(){
-        $materials = collect(DB::select("SELECT *,users.first_name as firstname, users.surname as surname FROM `material` INNER JOIN `users` INNER JOIN `material_allocation` WHERE material.material_id = material_allocation.material_id AND material_allocation.user_id = users.user_id"));
-//        $materials = Material::has('salesman')->get();
-
-        return view('procurementofficer.allocated',compact('materials'));
+        if(Auth::user()->user_type=='Procurement Officer'){
+            $materials = collect(DB::select("SELECT *,users.first_name as firstname, users.surname as surname FROM `material` INNER JOIN `users` INNER JOIN `material_allocation` WHERE material.material_id = material_allocation.material_id AND material_allocation.user_id = users.user_id"));
+            return view('procurementofficer.allocated',compact('materials'));
+        }else{
+            return redirect()->route('home');
+        }
     }
 }

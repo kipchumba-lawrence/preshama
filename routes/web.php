@@ -39,3 +39,6 @@ Route::get('approved_by_credit_manager',[\App\Http\Controllers\ApproveOrders::cl
 Route::post('allocate',[\App\Http\Controllers\ApproveOrders::class,'Allocate'])->name('procurementOfficerAllocate');
 Route::get('allocated-materials',[\App\Http\Controllers\ApproveOrders::class,'Allocated']);
 
+//manage customers
+Route::resource('customers', \App\Http\Controllers\CustomersController::class);
+

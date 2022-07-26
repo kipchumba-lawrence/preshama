@@ -7,7 +7,7 @@
     {{--    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/theme-checkbox-radio.css')}}">--}}
 @endsection
 @section('page-action')
-    <h3>Credit Manager - Reverse orders that you approved</h3>
+    <h3>Credit Manager - Reverse orders that you approved ({{ $orders->count() }} total)</h3>
 @endsection
 @section('main-content')
     <!--  BEGIN CONTENT AREA  -->

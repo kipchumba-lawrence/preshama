@@ -18,14 +18,22 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::all();
-        return view('admin.users.show',compact('users'));
+        if(Auth::user()->user_type=='Admin') {
+            $users = User::all();
+            return view('admin.users.show', compact('users'));
+        }else{
+            return redirect()->route('home');
+        }
     }
 
     public function create()
     {
-        $roles = user_role::all();
-        return view('admin.users.create',compact('roles'));
+        if(Auth::user()->user_type=='Admin') {
+            $roles = user_role::all();
+            return view('admin.users.create', compact('roles'));
+        }else{
+            return redirect()->route('home');
+        }
     }
 
     public function store(Request $request)
