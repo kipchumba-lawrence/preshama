@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Reports;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,25 +23,34 @@ Auth::routes(['register' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('users', \App\Http\Controllers\UsersController::class);
-Route::resource('profile',\App\Http\Controllers\Profile::class);
-Route::resource('admin',\App\Http\Controllers\WardController::class);
-Route::get('download/{id}',[\App\Http\Controllers\HomeController::class, 'download'])->name('download');
+Route::resource('profile', \App\Http\Controllers\Profile::class);
+Route::resource('admin', \App\Http\Controllers\WardController::class);
+Route::get('download/{id}', [\App\Http\Controllers\HomeController::class, 'download'])->name('download');
 
 //approve orders by credit manager route
-Route::post('unapproved',[\App\Http\Controllers\ApproveOrders::class, 'creditManagerApproval'])->name('creditManagerApproval');
-Route::post('reverse',[\App\Http\Controllers\ApproveOrders::class, 'creditManagerReverse'])->name('creditManagerReverse');
-Route::get('approved',[\App\Http\Controllers\ApproveOrders::class, 'ApprovedC'])->name('approved');
+Route::post('unapproved', [\App\Http\Controllers\ApproveOrders::class, 'creditManagerApproval'])->name('creditManagerApproval');
+Route::post('reverse', [\App\Http\Controllers\ApproveOrders::class, 'creditManagerReverse'])->name('creditManagerReverse');
+Route::get('approved', [\App\Http\Controllers\ApproveOrders::class, 'ApprovedC'])->name('approved');
 
 
 //approve orders by operations manager route
-Route::post('save',[\App\Http\Controllers\ApproveOrders::class, 'operationsManagerApproval'])->name('operationsManagerApproval');
-Route::post('reverseM',[\App\Http\Controllers\ApproveOrders::class, 'operationsManagerReverse'])->name('operationsManagerReverse');
-Route::get('approved_by_credit_manager',[\App\Http\Controllers\ApproveOrders::class, 'ApprovedO'])->name('approvedByOm');
+Route::post('save', [\App\Http\Controllers\ApproveOrders::class, 'operationsManagerApproval'])->name('operationsManagerApproval');
+Route::post('reverseM', [\App\Http\Controllers\ApproveOrders::class, 'operationsManagerReverse'])->name('operationsManagerReverse');
+Route::get('approved_by_credit_manager', [\App\Http\Controllers\ApproveOrders::class, 'ApprovedO'])->name('approvedByOm');
 
 //allocations
-Route::post('allocate',[\App\Http\Controllers\ApproveOrders::class,'Allocate'])->name('procurementOfficerAllocate');
-Route::get('allocated-materials',[\App\Http\Controllers\ApproveOrders::class,'Allocated']);
+Route::post('allocate', [\App\Http\Controllers\ApproveOrders::class, 'Allocate'])->name('procurementOfficerAllocate');
+Route::get('allocated-materials', [\App\Http\Controllers\ApproveOrders::class, 'Allocated']);
 
 //manage customers
 Route::resource('customers', \App\Http\Controllers\CustomersController::class);
 
+// Management Reports
+
+// Sales
+Route::get('report/sales', [Reports::class, 'sales'])->name('sales');
+Route::post('report/sales', [Reports::class, 'sales_per_rep'])->name('sales_per_rep');
+
+// Allocation
+Route::get('report/allocation', [Reports::class, 'sales_allocations'])->name('allocations');
+Route::post('report/allocation', [Reports::class, 'allocations'])->name('allocationss_per_rep');

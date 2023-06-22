@@ -14,11 +14,18 @@ class Customer extends Model
 
     public function salesman()
     {
-        return $this->belongsToMany(User::class,'customer_dist_channels','customer_id','sales_person_id')->withPivot('route_id');
+        return $this->belongsToMany(User::class, 'customer_dist_channels', 'customer_id', 'sales_person_id')->withPivot('route_id');
     }
-
+    public function salesrep()
+    {
+        return $this->belongsTo(SalesRep::class, 'rep_id', 'repid');
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     public function routes()
     {
-        return $this->belongsToMany(Route::class,'customer_dist_channels','customer_id','route_id');
+        return $this->belongsToMany(Route::class, 'customer_dist_channels', 'customer_id', 'route_id');
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Order_detail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
@@ -14,11 +16,14 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(customer::class,'customer_id');
+        return $this->belongsTo(customer::class, 'customer_id');
     }
-
-    public function creditManagerUser(){
-        return $this->belongsTo(User::class,'credit_manager');
+    public function creditManagerUser()
+    {
+        return $this->belongsTo(User::class, 'credit_manager');
     }
-
+    public function orderDetails()
+    {
+        return $this->hasMany(Order_detail::class, 'order_id');
+    }
 }

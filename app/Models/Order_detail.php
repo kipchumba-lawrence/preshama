@@ -14,4 +14,8 @@ class Order_detail extends Model
     {
         return $this->belongsTo(Order::class);
     }
+    public function material()
+{
+    return $this->belongsTo(Material::class, 'product_id', 'material_id');
+}
 }
