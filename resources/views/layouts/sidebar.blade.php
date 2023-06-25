@@ -122,7 +122,7 @@
                 </li>
             @endif
 
-            @if (Auth::user()->user_type == 'Operations Manager')
+            @if (Auth::user()->user_type == 'Manager')
                 <li class="menu">
                     <a href="#starter-kit" data-active="true" data-toggle="collapse" aria-expanded="true"
                         class="dropdown-toggle">
@@ -148,9 +148,6 @@
                     <ul class="submenu list-unstyled collapse show" id="starter-kit" data-parent="#accordionExample"
                         style="">
                         <li>
-                            <a href="{{ url('report/dashboard') }}">Overview</a>
-                        </li>
-                        <li>
                             <a href="{{ url('report/sales') }}">Sales</a>
                         </li>
                         <li>
@@ -161,9 +158,12 @@
                         </li>
                         <li>
                             <a href="{{ url('report/collections') }}">Collections</a>
-                        </li>                        
+                        </li>
                     </ul>
                 </li>
+            @endif
+
+            @if (Auth::user()->user_type == 'Operations Manager')
                 <li class="menu">
                     <a href="#starter-kit" data-active="true" data-toggle="collapse" aria-expanded="true"
                         class="dropdown-toggle">

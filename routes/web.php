@@ -54,3 +54,11 @@ Route::post('report/sales', [Reports::class, 'sales_per_rep'])->name('sales_per_
 // Allocation
 Route::get('report/allocation', [Reports::class, 'sales_allocations'])->name('allocations');
 Route::post('report/allocation', [Reports::class, 'allocations'])->name('allocationss_per_rep');
+
+// Products
+Route::get('report/products', [Reports::class, 'products_sold'])->name('products_sold');
+Route::post('report/products', [Reports::class, 'products_sold_per_rep'])->name('products_sold_per_rep');
+
+// Collections
+Route::get('report/collections', [Reports::class, 'collections'])->name('collections');
+Route::post('report/collections', [Reports::class, 'collections_per_rep'])->name('collections_per_rep');

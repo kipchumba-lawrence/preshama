@@ -18,7 +18,7 @@ use App\Http\Controllers\Controller;
 
 class Reports extends Controller
 {
-    //Show overview of the statistics
+    //Sales statistics 
     public function sales()
     {
         $sales_rep = SalesRep::select('first_name', 'last_name', 'repid')->get();
@@ -41,11 +41,9 @@ class Reports extends Controller
         }
         return view('Reports.sales', compact('orders', 'rep', 'sales_rep'));
     }
-    public function products()
-    {
-        // $orderDetails = Order_detail::whereNotNull('product_id')->with('material')->get();
 
-    }
+
+    // Allocations Table
     public function sales_allocations()
     {
         $allocations = DB::table('users_app')
@@ -98,5 +96,97 @@ class Reports extends Controller
         $sales_rep = User_app::where('user_type', 'SALES_REP')->get();
         $active_sales = User_app::where('user_id', $request->sales_person)->select('first_name', 'surname')->get();
         return view('Reports.allocations', compact('sales_rep', 'active_sales', 'allocations'));
+    }
+
+
+    // Product Reports
+    public function products_sold()
+    {
+        $sales_rep = SalesRep::select('first_name', 'last_name', 'repid')->get();
+        $products = DB::table('order_detail')
+            ->join('material', 'order_detail.product_id', '=', 'material.material_id')
+            ->join('order', 'order_detail.order_id', '=', 'order.order_id')
+            ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+            ->join('sales_person', 'customer.repid', '=', 'sales_person.repid')
+            ->select(
+                'material.material_name',
+                'order_detail.amount',
+                'order_detail.create_date',
+                'order.tracking_no',
+                'customer.customer_name',
+                'material.standard_price'
+            )
+            ->orderByDesc('order_detail.create_date')
+            ->get();
+        $count = $products->count();
+        return view('Reports.products', compact('sales_rep', 'products', 'count'));
+    }
+    public function products_sold_per_rep(Request $request)
+    {
+        $repid = $request->sales_person;
+        $products = DB::table('order_detail')
+            ->join('material', 'order_detail.product_id', '=', 'material.material_id')
+            ->join('order', 'order_detail.order_id', '=', 'order.order_id')
+            ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+            ->join('sales_person', 'customer.repid', '=', 'sales_person.repid')
+            ->select(
+                'material.material_name',
+                'order_detail.amount',
+                'order_detail.create_date',
+                'order.tracking_no',
+                'customer.customer_name',
+                'material.standard_price'
+            )
+            ->where('sales_person.repid', '=', $repid)
+            ->orderBy('order_detail.create_date', 'desc')
+            ->get();
+
+        $count = $products->count();
+        $active_sales = SalesRep::where('repid', $repid)->select('first_name', 'last_name')->get();
+        $sales_rep = SalesRep::select('first_name', 'last_name', 'repid')->get();
+        return view('Reports.products', compact('sales_rep', 'products', 'active_sales', 'count'));
+    }
+    public function collections()
+    {
+        $salesOrders = DB::table('order')
+            ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+            ->join('sales_person', 'customer.repid', '=', 'sales_person.repid')
+            ->select(
+                'order.create_date',
+                'customer.customer_name',
+                'order.credit_manager_approval',
+                'order.order_id',
+                'order.operations_manager_approval',
+                DB::raw('SUM(order.total_cost) as total_cost')
+            )
+            ->groupBy('order.order_id', 'order.create_date', 'customer.customer_name', 'order.credit_manager_approval', 'order.operations_manager_approval','order.total_cost')
+            ->get();
+        $total_collections = $salesOrders->sum('total_cost');
+        $sales_rep = SalesRep::select('first_name', 'last_name', 'repid')->get();
+        return  view('Reports.collections', compact('total_collections', 'sales_rep', 'salesOrders'));
+    }
+    public function collections_per_rep(Request $request)
+    {
+        $repid = $request->sales_person;
+        $salesOrders = DB::table('order')
+            ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+            ->join('sales_person', 'customer.repid', '=', 'sales_person.repid')
+            ->select(
+                'order.create_date',
+                'customer.customer_name',
+                'order.credit_manager_approval',
+                'order.order_id',
+                'order.total_cost',
+                'order.operations_manager_approval',
+                DB::raw('SUM(order.total_cost) as total_cost')
+            )
+            ->where('sales_person.repid', '=', $repid)
+            ->groupBy('order.order_id', 'order.create_date', 'customer.customer_name', 'order.credit_manager_approval', 'order.operations_manager_approval','order.total_cost')
+            ->get();
+
+        $total_collections = $salesOrders->sum('total_cost');
+        $sales_rep = SalesRep::select('first_name', 'last_name', 'repid')->get();
+        $active_sales = SalesRep::where('repid', $repid)->select('first_name', 'last_name')->get();
+        return view('Reports.collections', compact('total_collections','active_sales', 'sales_rep', 'salesOrders'));
     }
 }
