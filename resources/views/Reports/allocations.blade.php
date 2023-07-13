@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('meta')
-    <title>Preshama - Manage users</title>
+    <title>Preshama - Reports</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('assets/css/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-action')
-    <h3>Manage system users</h3>
+    <h3>Allocation Reports</h3>
 @endsection
 @section('main-content')
     <!--  BEGIN CONTENT PART  -->
@@ -18,10 +18,10 @@
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="widget-content widget-content-area br-6">
                         @include('includes.messages')
-                        <h4>Orders Per Sales Representative</h4>
+                        <h4>Allocations Per Sales Representative</h4>
                         @if (isset($active_sales))
                             @foreach ($active_sales as $sales_representative)
-                            <h2>{{ $sales_representative->first_name }} {{$sales_representative->surname}} </h2>
+                                <h2>{{ $sales_representative->first_name }} {{ $sales_representative->surname }} </h2>
                             @endforeach
                         @endif
                         <span>
@@ -83,9 +83,12 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-
                             </table>
                         </form>
+                        <div class="text-right px-2 py-2">
+                            <a href="{{ route('export.sales.allocations') }}"><button class="btn btn-primary">Download
+                                    Report</button></a>
+                        </div>
                     </div>
                 </div>
 

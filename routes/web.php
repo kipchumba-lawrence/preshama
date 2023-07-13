@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\LoginReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,15 +51,28 @@ Route::resource('customers', \App\Http\Controllers\CustomersController::class);
 // Sales
 Route::get('report/sales', [Reports::class, 'sales'])->name('sales');
 Route::post('report/sales', [Reports::class, 'sales_per_rep'])->name('sales_per_rep');
+Route::get('/export-sales', [Reports::class, 'exportSales'])->name('export.orders');
 
 // Allocation
 Route::get('report/allocation', [Reports::class, 'sales_allocations'])->name('allocations');
 Route::post('report/allocation', [Reports::class, 'allocations'])->name('allocationss_per_rep');
+Route::get('/export-sales-allocations', [Reports::class, 'exportSalesAllocations'])->name('export.sales.allocations');
+
 
 // Products
 Route::get('report/products', [Reports::class, 'products_sold'])->name('products_sold');
 Route::post('report/products', [Reports::class, 'products_sold_per_rep'])->name('products_sold_per_rep');
+Route::get('/export-products-sold', [Reports::class, 'exportProductsSold'])->name('export.products.sold');
+
 
 // Collections
 Route::get('report/collections', [Reports::class, 'collections'])->name('collections');
 Route::post('report/collections', [Reports::class, 'collections_per_rep'])->name('collections_per_rep');
+Route::get('/export-collections', [Reports::class, 'exportCollections'])->name('export.collections');
+
+
+// Login Reports
+Route::get('login-audit', [LoginReportController::class, 'index'])->name('login-audit');
+Route::get('/export-login-records', [LoginReportController::class, 'exportLoginRecords'])->name('export.login.records');
+
+// Route::get('/sales/download', 'YourController@downloadSales')->name('sales.download');

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('meta')
-    <title>Preshama - Manage users</title>
+    <title>Preshama - Reports</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('assets/css/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-action')
-    <h3>Manage system users</h3>
+    <h3>Collection Reports</h3>
 @endsection
 @section('main-content')
     <!--  BEGIN CONTENT PART  -->
@@ -80,6 +80,10 @@
                             </table>
 
                         </form>
+                        <div class="text-right px-2 py-2">
+                            <a href="{{ route('export.collections') }}" ><button class="btn btn-primary">Download
+                                    Report</button></a>
+                        </div>
                     </div>
                 </div>
 

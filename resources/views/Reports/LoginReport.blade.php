@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('meta')
-    <title>Preshama - Reports</title>
+    <title>Preshama - Manage users</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('assets/css/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-action')
-    <h3>Product Reports</h3>
+    <h3>Manage system users</h3>
 @endsection
 @section('main-content')
     <!--  BEGIN CONTENT PART  -->
@@ -18,76 +18,56 @@
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="widget-content widget-content-area br-6">
                         @include('includes.messages')
-                        <h4>Products Sold Per Sales Person</h4>
-                        @if (isset($active_sales))
-                            @foreach ($active_sales as $sales_representative)
-                                <h4>{{ $sales_representative->first_name }} {{ $sales_representative->last_name }} </h4>
-                            @endforeach
-                        @endif
-                        <span>
-                            <h6>Total Products Sold: {{ $count }}</h6>
-                        </span>
-                        <div class="d-flex justify-content-end">
-                            <form action="{{ route('products_sold_per_rep') }}" method="POST">
-                                @csrf
-                                <select class="form-control" name="sales_person" onchange="this.form.submit()"
-                                    id="">
-                                    <option value="null">Products Sold Per Sales Person</option>
-                                    @foreach ($sales_rep as $rep)
-                                        <option value="{{ $rep->repid }}">{{ $rep->first_name }} {{ $rep->last_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </form>
-                        </div>
+                        <h4>Login Audit</h4>
                         <form action="" method="post">
                             {{ csrf_field() }}
                             <table id="zero-config" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Customer Name</th>
-                                        <th>Amount</th>
-                                        <th>Customer Name</th>
-                                        <th>Amount</th>
-                                        <th>Price</th>
-                                        <th>Tracking Number</th>
-                                        <th>Created Date</th>
+                                        <th>
+                                            <input type="checkbox" class="new-control-input selectall">
+                                        </th>
+                                        <th>Full Name</th>
+                                        <th>Username</th>
+                                        <th>User Type</th>
+                                        <th>Login Time</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($products as $product)
+                                    @foreach ($loginrecords as $record)
                                         <tr>
+                                            <td>
+                                                <div class="n-chk">
+                                                    <label class="new-control new-checkbox checkbox-primary">
+                                                        <input type="checkbox" class="new-control-input order"
+                                                            name="orders[]" id="{{ $record->id }}"
+                                                            value="{{ $record->id }}">
+                                                    </label>
+                                                </div>
+                                            </td>
                                             <td><a href="#"><span
-                                                        class="inv-number">{{ $product->material_name }}</span></a></td>
+                                                        class="inv-number">{{ $record->full_name }}</span></a></td>
                                             <td>
-                                                <small>{{ $product->amount }}</small>
+                                                <small>{{ $record->username }}
+                                                </small>
                                             </td>
                                             <td>
-                                                <small>{{ $product->customer_name }}</small>
+                                                <small>{{ $record->user_type }}</small>
                                             </td>
                                             <td>
-                                                <small>{{ $product->amount }}</small>
-                                            </td>
-                                            <td>
-                                                <small>{{ $product->standard_price }}</small>
-                                            </td>
-                                            <td>
-                                                <small>{{ $product->tracking_no }}</small>
-                                            </td>
-                                            <td>
-                                                <small>{{ $product->create_date }}</small>
+                                                <small>{{ $record->login_time }}</small>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
 
+                            </table>
                         </form>
-                        <div class="text-right px-2 py-2">
-                            <a href="{{ route('export.products.sold') }}"><button class="btn btn-primary">Download
-                                    Report</button></a>
+                        <div>
+                            <a href="{{ route('export.login.records') }}" class="btn btn-primary">Export Login Records</a>
                         </div>
+
                     </div>
                 </div>
 

@@ -1,28 +1,26 @@
 @extends('layouts.app')
 @section('meta')
-    <title>Preshama - Manage users</title>
+    <title>Preshama - Reports</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('assets/css/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-action')
-    <h3>Manage system users</h3>
+    <h3>Sales Reports</h3>
 @endsection
 @section('main-content')
 
     <!--  BEGIN CONTENT PART  -->
     <div id="content" class="main-content">
         <div class="layout-px-spacing">
-
             <div class="row layout-top-spacing" id="cancel-row">
-
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="widget-content widget-content-area br-6">
                         @include('includes.messages')
                         <h4>Orders Per Sales Representative</h4>
                         @if (isset($rep))
                             @foreach ($rep as $sale_rep)
-                            <h2>{{ $sale_rep->first_name }} {{$sale_rep->last_name}} </h2>
+                                <h2>{{ $sale_rep->first_name }} {{ $sale_rep->last_name }} </h2>
                             @endforeach
                         @endif
                         <span>
@@ -78,7 +76,8 @@
                                                         class="inv-number">{{ $order->order_id }}</span></a></td>
                                             <td>
                                                 <small>{{ $order->customer->customer_name }}
-                                                    ({{ $order->customer->customer_no }})</small>
+                                                    ({{ $order->customer->customer_no }})
+                                                </small>
                                             </td>
                                             <td>
                                                 <small>{{ $order->creditManager }} {{ $order->creditManager }} </small>
@@ -115,6 +114,9 @@
 
                             </table>
                         </form>
+                        <div class="text-right px-2 py-2">
+                        <a href="{{ route('export.orders') }}"><button class="btn btn-primary">Download Report</button></a>
+                        </div>
                     </div>
                 </div>
 
