@@ -48,9 +48,14 @@ class HomeController extends Controller
             return view('procurementofficer.allocation', compact('materials', 'salesmen'));
         }
         if (Auth::user()->user_type == 'Manager') {
-            $sales_rep = SalesRep::select('first_name', 'last_name', 'repid')->get();
-            $orders = Order::with('customer')->get();
-            return view('Reports.sales', compact('orders',  'sales_rep'));
+            $sales_rep = DB::table('sales_person')
+                ->select('first_name', 'last_name', 'repid')
+                ->get();
+            $orders = DB::table('order')
+                ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+                ->select('order.*', 'customer.*')
+                ->get();
+            return view('Reports.sales', compact('orders', 'sales_rep'));
         } else {
             route('logout');
         }

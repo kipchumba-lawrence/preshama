@@ -75,12 +75,12 @@
                                             <td><a href="#"><span
                                                         class="inv-number">{{ $order->order_id }}</span></a></td>
                                             <td>
-                                                <small>{{ $order->customer->customer_name }}
-                                                    ({{ $order->customer->customer_no }})
+                                                <small>{{ $order->customer_name }}
+                                                    ({{ $order->customer_no }})
                                                 </small>
                                             </td>
                                             <td>
-                                                <small>{{ $order->creditManager }} {{ $order->creditManager }} </small>
+                                                <small>{{ $order->credit_manager }} </small>
                                             </td>
                                             <td>
                                                 <small>{{ date('d-M-Y', strtotime($order->credit_manager_approval_date)) }}

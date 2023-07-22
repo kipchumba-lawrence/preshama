@@ -12,9 +12,8 @@ class LoginReportController extends Controller
 {
     public function index()
     {
-        $loggedInUsers = User::whereNotNull('last_login_at')->get();
         $loginrecords = LoginRecord::all();
-        return view('reports/Loginreport', compact('loginrecords'));
+        return view('Reports/LoginReport', compact('loginrecords'));
     }
 
     public function exportLoginRecords()
