@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\Route;
 use App\Models\User;
+use App\Models\Route;
+use App\Models\UserApp;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,10 +19,10 @@ class CustomersController extends Controller
 
     public function index()
     {
-        if(Auth::user()->user_type=='Admin'){
+        if (Auth::user()->user_type == 'Admin') {
             $customers = Customer::all();
-            return view('admin.customers.show',compact('customers'));
-        }else{
+            return view('admin.customers.show', compact('customers'));
+        } else {
             return redirect()->route('home');
         }
     }
@@ -29,22 +30,22 @@ class CustomersController extends Controller
 
     public function create()
     {
-       if(Auth::user()->user_type=='Admin'){
-           $sales_managers = User::where('user_type','Sales Manager')->get();
-           $routes = Route::all();
-           return view('admin.customers.create',compact('sales_managers','routes'));
-       }else{
-           return redirect()->route('home');
-       }
+        if (Auth::user()->user_type == 'Admin') {
+            $sales_managers = User::where('user_type', 'Sales Manager')->get();
+            $routes = Route::all();
+            return view('admin.customers.create', compact('sales_managers', 'routes'));
+        } else {
+            return redirect()->route('home');
+        }
     }
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name'=>'required|max:100',
-            'salesmanager'=>'required',
-            'route'=>'required',
-            'customer_number'=>'required'
+        $this->validate($request, [
+            'name' => 'required|max:100',
+            'salesmanager' => 'required',
+            'route' => 'required',
+            'customer_number' => 'required'
         ]);
 
         $customer = new Customer();
@@ -56,10 +57,9 @@ class CustomersController extends Controller
         $customer->credit_limit = $request->credit_exposure;
         $customer->credit_exposure = $request->credit_exposure;
         $customer->save();
-        $customer->salesman()->syncWithPivotValues([$request->salesmanager],['route_id'=>$request->route]);
+        $customer->salesman()->syncWithPivotValues([$request->salesmanager], ['route_id' => $request->route]);
 
-        return redirect()->back()->with('success',"$request->name successfully registered");
-
+        return redirect()->back()->with('success', "$request->name successfully registered");
     }
 
     public function show($id)
@@ -70,7 +70,7 @@ class CustomersController extends Controller
     public function edit($id)
     {
         $customer = Customer::find($id);
-        return view('admin.customers.edit',compact('customer'));
+        return view('admin.customers.edit', compact('customer'));
     }
 
     public function update(Request $request, $id)
@@ -80,9 +80,9 @@ class CustomersController extends Controller
 
     public function destroy($id)
     {
-        $customer = Customer::where('customer_id',$id)->first();
+        $customer = Customer::where('customer_id', $id)->first();
         $customer->delete();
         $customer->salesman()->detach();
-        return redirect()->back()->with('success',"Successfully deleted");
+        return redirect()->back()->with('success', "Successfully deleted");
     }
 }

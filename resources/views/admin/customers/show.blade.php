@@ -87,6 +87,9 @@
                             </tr>
                             </tfoot>
                         </table>
+                        <div class="text-right px-2 py-2">
+                            <a href="{{ route('refreshUsers') }}"><button class="btn btn-primary">Refresh Users</button></a>
+                            </div>
                     </div>
                 </div>
 

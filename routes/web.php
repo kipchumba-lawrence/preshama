@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\Reports;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,9 +46,9 @@ Route::get('allocated-materials', [\App\Http\Controllers\ApproveOrders::class, '
 
 //manage customers
 Route::resource('customers', \App\Http\Controllers\CustomersController::class);
+Route::get('refresh-customers',[Reports::class,'refreshUsers'])->name('refreshUsers');
 
 // Management Reports
-
 // Sales
 Route::get('report/sales', [Reports::class, 'sales'])->name('sales');
 Route::post('report/sales', [Reports::class, 'sales_per_rep'])->name('sales_per_rep');

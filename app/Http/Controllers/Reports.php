@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use app;
 use App\Models\Order;
+use App\Models\UserApp;
+use App\Models\Customer;
 use App\Models\SalesRep;
-use App\Models\User_app;
 use App\Exports\OrderExport;
+
 use App\Models\Order_detail;
 use Illuminate\Http\Request;
-
 use App\Exports\CollectionsExport;
 use App\Exports\ProductSoldExport;
 use Illuminate\Support\Facades\DB;
@@ -89,7 +91,7 @@ class Reports extends Controller
                 DB::raw("DATE_FORMAT(material_allocation.allocation_date, '%d-%m-%Y') AS allocation_date")
             )
             ->get();
-        $sales_rep = User_app::where('user_type', 'SALES_REP')->get();
+        $sales_rep = UserApp::where('user_type', 'SALES_REP')->get();
         return view('Reports.allocations', compact('sales_rep', 'allocations'));
     }
 
@@ -129,8 +131,8 @@ class Reports extends Controller
                 ->get();
         };
 
-        $sales_rep = User_app::where('user_type', 'SALES_REP')->get();
-        $active_sales = User_app::where('user_id', $request->sales_person)->select('first_name', 'surname')->get();
+        $sales_rep = UserApp::where('user_type', 'SALES_REP')->get();
+        $active_sales = UserApp::where('user_id', $request->sales_person)->select('first_name', 'surname')->get();
         return view('Reports.allocations', compact('sales_rep', 'active_sales', 'allocations'));
     }
 
@@ -234,5 +236,38 @@ class Reports extends Controller
     public function exportCollections()
     {
         return Excel::download(new CollectionsExport, 'collections.xlsx');
+    }
+    // Update users
+    public function refreshUsers()
+    {
+        // Get all UserApp records
+        $users = UserApp::where('user_type', 'USER')->get();
+        // Loop through each user and update the first_name field
+        foreach ($users as $user) {
+
+            // Retrieve the related customer record and update the first_name field in the UserApp table
+            // $customer = Customer::find($user->customer_id);
+
+            $customer = Customer::where('customer_id', $user->customer_id)->first();
+
+            if ($customer) {
+                // Assuming $user is the UserApp instance and $customer is the related Customer instance
+                if ($customer) {
+                    $nameParts = explode(' ', $customer->customer_name, 2); // Split customer_name into an array of parts (first word and the rest)
+
+                    $user->first_name = $nameParts[0]; // Set first_name to the first word
+                    $user->surname = isset($nameParts[1]) ? $nameParts[1] : null; // Set surname to the rest (if available)
+
+                    $emailName = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($customer->customer_name)); // Remove non-alphanumeric characters and convert to lowercase
+                    $user->email = $emailName . "@preshama.com"; // Set the email
+
+                    $user->save(); // Save the changes to the database
+                }
+
+                $user->save(); // Save the changes to the UserApp table
+            }
+        }
+        $customers = Customer::all();
+        return view('admin.customers.show', compact('customers'));
     }
 }
