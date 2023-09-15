@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Carbon\Carbon;
-use App\Models\LoginRecord;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -30,16 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected function authenticated(Request $request, $user)
-    {
-        $loginRecord = new LoginRecord();
-        $loginRecord->user_id = $user->user_id;
-        $loginRecord->username = $user->username;
-        $loginRecord->user_type = $user->user_type;
-        $loginRecord->full_name = $user->first_name . ' ' . $user->surname;
-        $loginRecord->login_time = Carbon::now();
-        $loginRecord->save();
-
+    public function authenticated(){
         return redirect('/home');
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Allocation;
 use App\Models\Material;
 use App\Models\Order;
 use App\Models\User;
@@ -115,8 +115,17 @@ class ApproveOrders extends Controller
 
     public function Allocated(){
         if(Auth::user()->user_type=='Procurement Officer'){
-            $materials = collect(DB::select("SELECT *,users.first_name as firstname, users.surname as surname FROM `material` INNER JOIN `users` INNER JOIN `material_allocation` WHERE material.material_id = material_allocation.material_id AND material_allocation.user_id = users.user_id"));
+         $materials = collect(DB::select("SELECT *,users_app.first_name as firstname, users_app.surname as surname FROM `material` INNER JOIN `users_app` INNER JOIN `material_allocation` WHERE material.material_id = material_allocation.material_id AND material_allocation.user_id = users_app.user_id"));
             return view('procurementofficer.allocated',compact('materials'));
+        }else{
+            return redirect()->route('home');
+        }
+    }
+    
+    public function deleteAllocation($id){
+        if(Auth::user()->user_type=='Procurement Officer'){
+            DB::delete("DELETE FROM material_allocation WHERE allocation_id=$id");
+            return redirect()->back()->with('success',"Successfully deleted");
         }else{
             return redirect()->route('home');
         }

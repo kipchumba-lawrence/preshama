@@ -22,6 +22,7 @@
                             <table id="zero-config" class="table table-hover" style="width:100%">
                                 <thead>
                                 <tr>
+                                    <th>Allocation date</th>
                                     <th>Material</th>
                                     <th>Material Number</th>
                                     <th>Assigned to</th>
@@ -29,12 +30,16 @@
                                     <th>Company code</th>
                                     <th>Uom</th>
                                     <th>Standard price</th>
+                                    <th class="no-content">Actions</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
                                 @foreach($materials as $material)
                                     <tr>
+                                        <td>
+                                            {{ $material->allocation_date }}
+                                        </td>
                                         <td><a href="#"><span class="inv-number">{{ $material->material_name }}</span></a></td>
                                         <td>
                                             {{ $material->material_no }}
@@ -52,6 +57,22 @@
                                             {{ $material->uom }}
                                         </td>
                                         <td><span class="inv-amount">{{ $material->standard_price }}</span></td>
+                                        <td>
+                                            <form id="delete-form-{{ $material->allocation_id }}" action="{{ route('deleteAllocation',$material->allocation_id) }}" style="display: none;" method="post">
+                                                {{@csrf_field()}}
+                                                {{@method_field('delete')}}
+                                            </form>
+                                            <a data-toggle="tooltip"
+                                               onclick="
+                                                   if(confirm('Are you sure you want to delete this allocation?'))
+                                                   {event.preventDefault();
+                                                   document.getElementById('delete-form-{{ $material->allocation_id }}').submit();
+                                                   }
+                                                   else{
+                                                   event.preventDefault();
+                                                   }
+                                                   "
+                                            ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle table-cancel"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

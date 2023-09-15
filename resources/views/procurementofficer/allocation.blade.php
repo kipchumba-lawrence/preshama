@@ -35,9 +35,11 @@
                                 <thead>
                                 <tr>
                                     <th>
-                                        <input type="checkbox" class="new-control-input selectall">
+{{--                                        <input type="checkbox" class="new-control-input selectall">--}}
                                     </th>
+                                   
                                     <th>Amount</th>
+                                    <th>M. id</th>
                                     <th>Material</th>
                                     <th>Number</th>
                                     <th>Company code</th>
@@ -53,7 +55,10 @@
                                             <input type="checkbox" class="material" name="materials[]" data-id="{{ $material->material_id }}" value="{{ $material->material_id }}">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control form-control-sm amount" name="amounts[]" data-id="{{ $material->material_id }}" placeholder="amount" disabled>
+                                            <input type="number" class="form-control form-control-sm amount" name="amounts[]" data-id="{{ $material->material_id }}" id="material-{{ $material->material_id }}" placeholder="amount" disabled>
+                                        </td>
+                                         <td>
+                                            {{ $material->material_id }}
                                         </td>
                                         <td><a href="#"><span class="inv-number">{{ $material->material_name }}</span></a></td>
                                         <td>
@@ -83,6 +88,20 @@
 @section('footerSection')
     <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
     <script>
+        // Enable quantity field if product is selected
+        $("input[name='amount']").prop('disabled', true);
+
+        $(".material").on('click', function() {
+            // Get reference to the text field in the same row with the name "quantity"
+            let id = $(this).attr('data-id');
+            var $next = $(this).closest('tr').find('#material-'+id);
+
+            // Enable the text field if the checkbox is checked, disable it if it is unchecked
+            $next.prop('disabled', ! $(this).is(':checked'));
+            $next.prop('required',  $(this).is(':checked'));
+            $next.val(null, ! $(this).is(':checked'));
+        });
+
         $('#zero-config').DataTable({
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                 "<'table-responsive'tr>" +
@@ -99,39 +118,5 @@
             "pageLength": 7
         });
 
-        // $('.selectall').click(function() {
-        //     if ($(this).is(':checked')) {
-        //         $('.material').attr('checked', true);
-        //     } else {
-        //         $('.material').attr('checked', false);
-        //     }
-        // });
-        $('document').ready(function (){
-            $('.material').on('click', function () {
-                let id = $(this).attr('data-id');
-                let enabled = $(this).is(":checked")
-                $('.amount[data-id="' + id + '"]').attr('disabled', !enabled);
-                $('.amount[data-id="' + id + '"]').attr('required',enabled);
-                $('.amount[data-id="' + id + '"]').val(null);
-
-            });
-
-            $('.selectall').on('click', function () {
-
-                let enabled = $(this).is(":checked")
-
-                $('.amount').attr('disabled', !enabled);
-
-                $('.amount').val(null);
-                if(enabled){
-                    $('.material').attr('checked', true);
-                    $('.amount').attr('required',enabled);
-                }
-                else{
-                    $('.material').attr('checked', false);
-                }
-            });
-        });
     </script>
-    {{--    <script src="{{ asset('assets/js/apps/invoice-list.js')}}"></script>--}}
 @endsection

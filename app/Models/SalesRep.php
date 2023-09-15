@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SalesRep extends Model
 {
     protected $table = 'sales_person';
+    protected $fillable = ['region'];
+    protected $primaryKey = 'sales_person_id';
+
     use HasFactory;
     public function clients()
     {
@@ -17,5 +20,4 @@ class SalesRep extends Model
     {
         return $this->hasManyThrough(Order::class, Customer::class, 'repid', 'customer_id', 'id');
     }
-    
 }

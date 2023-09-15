@@ -19,8 +19,9 @@ class UsersController extends Controller
     public function index()
     {
         if(Auth::user()->user_type=='Admin') {
+            $roles = user_role::all();
             $users = User::all();
-            return view('admin.users.show', compact('users'));
+            return view('admin.users.show', compact('users','roles'));
         }else{
             return redirect()->route('home');
         }
@@ -68,9 +69,29 @@ class UsersController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update_user(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'firstname'=>'required|max:100',
+            'secondname'=>'required|max:100',
+            'role'=>'required',
+            'password'=>'required',
+            'email'=>['required', 'email']
+        ]);
+        
+        //update the application
+        $name = $request->get('firstname').' '.$request->get('secondname');
+        $user = User::where('user_id', $request->get('user_id'))
+            ->update([
+                'user_type' => $request->get('role'),
+                'first_name' => $request->get('firstname'),
+                'surname' => $request->get('secondname'),
+                'password' => Hash::make($request->get('password')),
+                'email' => $request->get('email'),
+            ]);
+        
+       
+        return redirect()->back()->with('success',"$name successfully updated");
     }
 
     public function destroy($id)

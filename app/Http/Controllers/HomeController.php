@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use App\Models\UserApp;
 
 
 
@@ -43,7 +44,7 @@ class HomeController extends Controller
         if (Auth::user()->user_type == 'Procurement Officer') {
 
             $materials = collect(DB::select("SELECT * FROM `material` WHERE material.material_id NOT IN (SELECT material_id FROM `material_allocation`)"));
-            $salesmen = User::where('user_type', 'Sales Manager')->get();
+            $salesmen = UserApp::where('user_type', 'SALES_REP')->get();
 
             return view('procurementofficer.allocation', compact('materials', 'salesmen'));
         }

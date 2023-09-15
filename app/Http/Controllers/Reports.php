@@ -270,4 +270,52 @@ class Reports extends Controller
         $customers = Customer::all();
         return view('admin.customers.show', compact('customers'));
     }
+    public function region_sales()
+    {
+        $orders = DB::table('order')
+            ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+            ->select('order.*', 'customer.*')
+            ->get();
+        // dd($orders);
+        return view('Reports.region_sales', compact('orders'));
+    }
+
+    /**
+     * Assigns a random region to each sales representative.
+     **/
+    public function assign()
+    {
+        $reps = SalesRep::all();
+
+        foreach ($reps as $rep) {
+            $region = rand(0, 1) ? 'East' : 'West'; // Randomly select East or West
+            $rep->region = $region; // Assign the random region
+            $rep->save(); // Save the record
+        }
+
+        return 'Regions updated randomly.';
+    }
+    public function sale_per_region(Request $request)
+    {
+        $region = $request->region; // Get the selected region
+
+        if ($region == 'Select Region') {
+            // Show orders for all regions (West and East)
+            $orders = DB::table('order')
+                ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+                ->select('order.*', 'customer.*')
+                ->get();
+        } else {
+            // Show orders for a specific region
+            $orders = DB::table('order')
+                ->join('customer', 'order.customer_id', '=', 'customer.customer_id')
+                ->join('sales_person', 'customer.repid', '=', 'sales_person.repid')
+                ->select('order.*', 'customer.*')
+                ->where('sales_person.region', $region)
+                ->get();
+        }
+    
+        session(['export_data' => $orders]);
+        return view('Reports.region_sales_per_rep', compact('orders'));
+    }
 }
