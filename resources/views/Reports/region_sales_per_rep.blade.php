@@ -26,6 +26,7 @@
                         <span>
                             <h6>Total Orders: {{ $orders->count() }}</h6>
                         </span>
+                        <span>{{$region}} Sales</span>
                         <div class="d-flex justify-content-end">
                             <form action="" method="POST">
                                 @csrf

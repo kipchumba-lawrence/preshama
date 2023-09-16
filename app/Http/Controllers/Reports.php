@@ -314,8 +314,8 @@ class Reports extends Controller
                 ->where('sales_person.region', $region)
                 ->get();
         }
-    
+
         session(['export_data' => $orders]);
-        return view('Reports.region_sales_per_rep', compact('orders'));
+        return view('Reports.region_sales_per_rep', compact('orders','region'));
     }
 }
