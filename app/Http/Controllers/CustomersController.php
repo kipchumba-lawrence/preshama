@@ -68,6 +68,16 @@ class CustomersController extends Controller
             return redirect()->route('home');
         }
     }
+    public function create_customer_user()
+    {
+        if (Auth::user()->user_type == 'Admin') {
+            $sales_managers = User::where('user_type', 'Sales Manager')->get();
+            $routes = Route::all();
+            return view('admin.customers.create-app-customer', compact('sales_managers', 'routes'));
+        } else {
+            return redirect()->route('home');
+        }
+    }
 
     public function store(Request $request)
     {

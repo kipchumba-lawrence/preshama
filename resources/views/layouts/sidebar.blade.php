@@ -65,7 +65,10 @@
                             <a href="{{ route('customers.index') }}">View all</a>
                         </li>
                         <li>
-                            <a href="{{ route('customers.createAppUser') }}">Add User</a>
+                            <a href="{{ route('customers.createAppUser') }}">Add Sales Rep</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('customers.createCustomerUser') }}">Add Customer</a>
                         </li>
                     </ul>
                 </li>
