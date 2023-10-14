@@ -69,3 +69,6 @@ Route::get('app-users', [CustomersController::class, 'index_app'])->name('custom
 Route::get('app-users/create', [CustomersController::class, 'create_app_user'])->name('customers.createAppUser');
 Route::post('customers/update/appUser/{id}', [CustomersController::class, 'update_app_user'])->name('customers.update.appUser');
 Route::post('users/update/User/{id}', [UsersController::class, 'update_user'])->name('users.update.user');
+
+// Hotfix Routes
+Route::get('update_customer_credit',[CustomersController::class, 'updateCustomersCredit'])->name('customers.update_customer_credit');

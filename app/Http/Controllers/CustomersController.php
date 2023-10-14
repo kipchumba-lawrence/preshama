@@ -23,7 +23,7 @@ class CustomersController extends Controller
     {
         if (Auth::user()->user_type == 'Admin') {
             // $users = Customer::all();
-            $users= UserApp::where('user_type','USER')->get();
+            $users = UserApp::where('user_type', 'USER')->get();
             return view('admin.customers.show', compact('users'));
         } else {
             return redirect()->route('home');
@@ -125,7 +125,7 @@ class CustomersController extends Controller
         return redirect()->back()->with('success', "$request->fname successfully registered");
     }
     // Find out how the rep id is assigned and how clients are onboaded on the app.
-    
+
     public function show($id)
     {
         //
@@ -182,4 +182,41 @@ class CustomersController extends Controller
         $user->delete();
         return redirect()->back()->with('success', "Successfully deleted");
     }
+    public function updateCustomersCredit()
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://api.sajsoft.co.ke:96/api/customers/customers.php',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+
+    if ($response) {
+        $apiData = json_decode($response, true);
+        foreach ($apiData as $data) {
+            $customer = Customer::where('customer_code', $data['code'])->first();
+
+            if ($customer) {
+                $customer->credit_limit = $data['creditlimit'];
+                $customer->credit_exposure = $data['bal'];
+                $customer->save();
+            }
+        }
+
+        return response()->json(['message' => 'Customers credit updated successfully.']);
+    } else {
+        return response()->json(['error' => 'Failed to fetch data from the API.'], 500);
+    }
+}
+
 }
