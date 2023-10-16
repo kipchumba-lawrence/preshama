@@ -24,6 +24,10 @@
                                     New</span>
 
                             </a> 
+                            <a class="mx-2 dt-button btn btn-primary btn-sm" href="{{ route('customers.update_customer_credit') }}"
+                                tabindex="0" aria-controls="invoice-list"><span >Refresh credit Scores</span>
+
+                            </a>
                         </div>
                         <table id="zero-config" class="table dt-table-hover" style="width:100%">
                             <thead>

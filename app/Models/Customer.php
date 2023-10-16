@@ -10,6 +10,7 @@ class Customer extends Model
     use HasFactory;
     protected $primaryKey = 'customer_id';
     protected $table = 'customer';
+    // protected $filleble=['']
     public $timestamps = false;
 
     public function salesman()
