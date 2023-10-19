@@ -62,7 +62,10 @@
                     <ul class="submenu list-unstyled collapse" id="submenu" data-parent="#accordionExample"
                         style="">
                         <li>
-                            <a href="{{ route('customers.index') }}">View all</a>
+                            <a href="{{ route('customers.index') }}">View Customers</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('customers.showSalesRep') }}">View Sales Rep</a>
                         </li>
                         <li>
                             <a href="{{ route('customers.createAppUser') }}">Add Sales Rep</a>

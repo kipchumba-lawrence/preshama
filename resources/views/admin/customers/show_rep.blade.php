@@ -12,11 +12,10 @@
     <!--  BEGIN CONTENT PART  -->
     <div id="content" class="main-content">
         <div class="layout-px-spacing">
-
             <div class="row layout-top-spacing" id="cancel-row">
-
+                
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
-                    <h3>Customers</h3>
+                    <h3>Sales Reps</h3>
                     <div class="widget-content widget-content-area br-6">
                         @include('includes.messages')
                         <div class="dt-buttons">

@@ -29,6 +29,16 @@ class CustomersController extends Controller
             return redirect()->route('home');
         }
     }
+    public function index_sales()
+    {
+        if (Auth::user()->user_type == 'Admin') {
+            // $users = Customer::all();
+            $users = UserApp::where('user_type', 'SALES_REP')->get();
+            return view('admin.customers.show_rep', compact('users'));
+        } else {
+            return redirect()->route('home');
+        }
+    }
 
     public function index_app()
     {

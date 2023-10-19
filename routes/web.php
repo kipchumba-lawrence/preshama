@@ -37,6 +37,8 @@ Route::delete('delete-allocation{id}', [\App\Http\Controllers\ApproveOrders::cla
 Route::resource('customers', CustomersController::class);
 Route::get('app-users/create', [CustomersController::class, 'create_app_user'])->name('customers.createAppUser');
 Route::get('app-customers/create', [CustomersController::class, 'create_customer_user'])->name('customers.createCustomerUser');
+Route::get('sales_rep', [CustomersController::class, 'index_sales'])->name('customers.showSalesRep');
+
 
 Route::get('refresh-customers', [Reports::class, 'refreshUsers'])->name('refreshUsers');
 

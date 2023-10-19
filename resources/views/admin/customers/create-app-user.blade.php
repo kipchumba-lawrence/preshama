@@ -32,15 +32,6 @@
                                                 <div class="work-section">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            {{-- <div class="form-group">
-                                                                <label for="degree2">User role</label>
-                                                                <select class="form-control" id="eiend-in1" name="user_type" required="required" >
-                                                                    <option value="">Select role</option>
-                                                                    <option value="SALES_REP">SALES REP</option>
-                                                                    <option value="CUSTOMER">CUSTOMER</option>
-
-                                                                </select>
-                                                            </div> --}}
                                                             <input type="hidden" name="user_type" value="SALES_REP">
                                                         </div>
 
@@ -79,26 +70,8 @@
                                                         </div>
                                                         <div class="form-group">
                                                         <label for="degree4">Pin</label>
-                                                        <input type="password" class="form-control mb-4" id="degree4" placeholder="Pin" name="pin" required="required">
+                                                        <input type="password" class="form-control mb-4" id="degree4" placeholder="Pin" name="pin" required="required" maxlength="5">
                                                     </div>
-                                                        {{-- <div class="col-md-12">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="degree3">Customer number</label>
-                                                                        <input type="text" class="form-control mb-4" id="degree3" placeholder="Customer Number" value="{{ old('customer_number') }}" name="customer_number" required="required">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="degree4">Pin</label>
-                                                                        <input type="password" class="form-control mb-4" id="degree4" placeholder="Pin" name="pin" required="required">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> --}}
-
-
                                                         <div class="col-md-12">
                                                             <button type="submit" class="btn btn-primary mt-3">Save details</button>
                                                         </div>
