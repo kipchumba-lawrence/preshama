@@ -38,8 +38,8 @@ class ApproveOrders extends Controller
 //            Order::whereIn('order_id', [$parsed])->update(['credit_manager_approval' => 1]);
             $id = Auth::user()->user_id;
             $current_date_time = Carbon::now()->toDateTimeString();
-            DB::statement( "UPDATE `order` SET `credit_manager_approval` = 1, `credit_manager` = $id, `credit_manager_approval_date` = '$current_date_time' WHERE `order_id` IN ($order)");
-            return redirect()->back()->with('success',"Selected orders have been approved");
+            DB::statement( "UPDATE `order` SET `credit_manager_approval` = 1, `credit_manager` = $id, `credit_manager_approval_date` = '$current_date_time',`operations_manager_approval` = 1, `operations_manager` = $id, `operations_manager_approval_date` = '$current_date_time' WHERE `order_id` IN ($order)");
+            return redirect()->back()->with('success',"Selected orders have been approved and fowarded for invoicing");
         }else{
             return redirect()->back()->with('error','No order selected');
         }
@@ -51,7 +51,7 @@ class ApproveOrders extends Controller
 
         if(!empty($request->orders)) {
             $order = implode(",", $request->orders);
-            DB::statement( "UPDATE `order` SET `credit_manager_approval` = NULL, `credit_manager` = NULL, `credit_manager_approval_date` = NULL WHERE `order_id` IN ($order)");
+            DB::statement( "UPDATE `order` SET `operations_manager_approval` = NULL, `operations_manager` = NULL, `operations_manager_approval_date` = NULL, `credit_manager_approval` = NULL, `credit_manager` = NULL, `credit_manager_approval_date` = NULL WHERE `order_id` IN ($order)");
             return redirect()->back()->with('success',"Selected approvals have been reversed");
         }else{
             return redirect()->back()->with('error','No order selected');
@@ -59,33 +59,33 @@ class ApproveOrders extends Controller
 
     }
 
-    public function operationsManagerApproval(Request $request){
+//     public function operationsManagerApproval(Request $request){
 
-        if(!empty($request->orders)) {
-            $order = implode(",", $request->orders);
-//            Order::whereIn('order_id', [$parsed])->update(['credit_manager_approval' => 1]);
-            $id = Auth::user()->user_id;
-            $current_date_time = Carbon::now()->toDateTimeString();
-            DB::statement( "UPDATE `order` SET `operations_manager_approval` = 1, `operations_manager` = $id, `operations_manager_approval_date` = '$current_date_time' WHERE `order_id` IN ($order)");
-            return redirect()->back()->with('success',"Selected orders have been approved");
-        }else{
-            return redirect()->back()->with('error','No order selected');
-        }
+//         if(!empty($request->orders)) {
+//             $order = implode(",", $request->orders);
+// //            Order::whereIn('order_id', [$parsed])->update(['credit_manager_approval' => 1]);
+//             $id = Auth::user()->user_id;
+//             $current_date_time = Carbon::now()->toDateTimeString();
+//             DB::statement( "UPDATE `order` SET `operations_manager_approval` = 1, `operations_manager` = $id, `operations_manager_approval_date` = '$current_date_time' WHERE `order_id` IN ($order)");
+//             return redirect()->back()->with('success',"Selected orders have been approved");
+//         }else{
+//             return redirect()->back()->with('error','No order selected');
+//         }
 
-    }
+//     }
 
     //reverse operations manager approval
-    public function operationsManagerReverse(Request $request){
+    // public function operationsManagerReverse(Request $request){
 
-        if(!empty($request->orders)) {
-            $order = implode(",", $request->orders);
-            DB::statement( "UPDATE `order` SET `operations_manager_approval` = NULL, `operations_manager` = NULL, `operations_manager_approval_date` = NULL WHERE `order_id` IN ($order)");
-            return redirect()->back()->with('success',"Selected approvals have been reversed");
-        }else{
-            return redirect()->back()->with('error','No order selected');
-        }
+    //     if(!empty($request->orders)) {
+    //         $order = implode(",", $request->orders);
+    //         DB::statement( "UPDATE `order` SET `operations_manager_approval` = NULL, `operations_manager` = NULL, `operations_manager_approval_date` = NULL WHERE `order_id` IN ($order)");
+    //         return redirect()->back()->with('success',"Selected approvals have been reversed");
+    //     }else{
+    //         return redirect()->back()->with('error','No order selected');
+    //     }
 
-    }
+    // }
 
 
     //allocations

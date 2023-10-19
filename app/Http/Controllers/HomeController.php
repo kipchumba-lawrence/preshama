@@ -37,11 +37,11 @@ class HomeController extends Controller
             $orders = Order::whereNull('credit_manager_approval')->get();
             return view('creditmanager.unapproved', compact('orders'));
         }
-
-        if (Auth::user()->user_type == 'Operations Manager') {
-            $orders = Order::whereNull('operations_manager_approval')->whereNotNull('credit_manager_approval')->get();
-            return view('operationmanager.unapproved', compact('orders'));
-        }
+// Removal of the Operations manager from the flowchain.
+        // if (Auth::user()->user_type == 'Operations Manager') {
+        //     $orders = Order::whereNull('operations_manager_approval')->whereNotNull('credit_manager_approval')->get();
+        //     return view('operationmanager.unapproved', compact('orders'));
+        // }
         if (Auth::user()->user_type == 'Procurement Officer') {
 
             $materials = collect(DB::select("SELECT * FROM `material` WHERE material.material_id NOT IN (SELECT material_id FROM `material_allocation`)"));
