@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class Payment extends Controller
 {
-    public function auth_token()
-    {
+public function auth_token()
+{
+    try {
         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'sandbox.familybank.co.ke:1045/connect/token',
+        $options = [
+            CURLOPT_URL => 'https://sandbox.familybank.co.ke:1045/connect/token',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -25,25 +27,38 @@ class Payment extends Controller
                 "grant_type": "client_credentials",
                 "scope": "OB_BULK_PAY "
             }',
-            CURLOPT_HTTPHEADER => array(
+            CURLOPT_HTTPHEADER => [
                 'Accept: */*',
                 'Content-Type: application/json'
-            ),
-        ));
+            ],
+        ];
+
+        curl_setopt_array($curl, $options);
 
         $response = curl_exec($curl);
 
         curl_close($curl);
 
-        // Parse the JSON response and return it as a Laravel JSON response
-        $responseData = json_decode($response, true);
+        if ($response) {
+            $responseData = json_decode($response, true);
 
-        // Check if the JSON decoding was successful
-        if ($responseData !== null) {
-            return response()->json($responseData);
+            if ($responseData !== null) {
+                return response()->json($responseData);
+            } else {
+                $errorMessage = 'Unable to parse the response';
+                Log::channel('customlog')->error($errorMessage);
+                return response()->json(['error' => $errorMessage], 500);
+            }
         } else {
-            // If JSON decoding failed, return an error response
-            return response()->json(['error' => 'Unable to parse the response'], 500);
+            $errorMessage = 'Empty response received from the API endpoint';
+            Log::channel('customlog')->error($errorMessage);
+            return response()->json(['error' => $errorMessage], 500);
         }
+    } catch (\Exception $e) {
+        $errorMessage = 'An error occurred during the token authentication: ' . $e;
+        Log::channel('customlog')->error($errorMessage);
+        Log::channel('customlog')->error($e);
+        return response()->json(['error' => 'An error occurred during the token authentication.'], 500);
     }
+}
 }

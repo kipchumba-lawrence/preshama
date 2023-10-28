@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API;
+use App\Http\Controllers\API\APICustomerController;
 use App\Http\Controllers\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::get('/auth', [Payment::class, 'auth_token']);
 Route::get('/customer/{customer_id}', [API::class, 'getRegion']);
+Route::get('/sales-rep-customers/{sales_rep_id}', [APICustomerController::class, 'getCustomersPerSalesRep']);
 

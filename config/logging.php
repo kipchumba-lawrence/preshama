@@ -53,6 +53,11 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
         ],
+        'customlog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/custom.log'),
+            'level' => 'error',
+        ],
 
         'slack' => [
             'driver' => 'slack',
