@@ -74,3 +74,6 @@ Route::post('users/update/User/{id}', [UsersController::class, 'update_user'])->
 
 // Hotfix Routes
 Route::get('update_customer_credit',[CustomersController::class, 'updateCustomersCredit'])->name('customers.update_customer_credit');
+// TODO: Create routes to update the products and the clients
+
+

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class CustomersController extends Controller
 {
@@ -196,27 +197,32 @@ class CustomersController extends Controller
     {
         // Add the JSON header to test
 
-        try {
+try {
 
-            $curl = curl_init();
+        //     $curl = curl_init();
 
-            curl_setopt_array($curl, array(
-              CURLOPT_URL => 'http://api.sajsoft.co.ke:96/api/customers/customers.php',
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => '',
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 0,
-              CURLOPT_FOLLOWLOCATION => true,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => 'GET',
-              CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-              ),
-            ));
-            $response = curl_exec($curl);
+        //     curl_setopt_array($curl, array(
+        //       CURLOPT_URL => 'http://api.sajsoft.co.ke:96/api/customers/customers.php',
+        //       CURLOPT_RETURNTRANSFER => true,
+        //       CURLOPT_ENCODING => '',
+        //       CURLOPT_MAXREDIRS => 10,
+        //       CURLOPT_TIMEOUT => 0,
+        //       CURLOPT_FOLLOWLOCATION => true,
+        //       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //       CURLOPT_CUSTOMREQUEST => 'GET',
+        //       CURLOPT_HTTPHEADER => array(
+        //         'Content-Type: application/json'
+        //       ),
+        //     ));
+        //     $response = curl_exec($curl);
+        //     echo($response);
+        //     dd($response);
 
-            curl_close($curl);
-
+        //     curl_close($curl);
+        $remoteScriptUrl='http://api.sajsoft.co.ke:96/api/customers/customers.php';
+        $response = Http::get($remoteScriptUrl);
+        $body = $response->body();
+            echo ($body);
             if ($response) {
                 $apiData = json_decode($response, true);
                 foreach ($apiData as $data) {
