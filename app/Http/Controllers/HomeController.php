@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Models\Ward;
 use App\Models\Order;
+use App\Models\user_role;
 use App\Models\Youth;
 use App\Models\SalesRep;
 use Illuminate\Http\Request;
@@ -29,9 +30,10 @@ class HomeController extends Controller
 
     public function index()
     {
-        if (Auth::user()->user_type == 'Admin') {
+        if(Auth::user()->user_type=='Admin'){
+            $roles = user_role::all();
             $users = User::all();
-            return view('admin.users.show', compact('users'));
+            return view('admin.users.show',compact('users','roles'));
         }
         if (Auth::user()->user_type == 'Credit Manager') {
             $orders = Order::whereNull('credit_manager_approval')->get();
@@ -42,13 +44,12 @@ class HomeController extends Controller
         //     $orders = Order::whereNull('operations_manager_approval')->whereNotNull('credit_manager_approval')->get();
         //     return view('operationmanager.unapproved', compact('orders'));
         // }        
-        if(Auth::user()->user_type=='Procurement Officer'){
+        if (Auth::user()->user_type == 'Procurement Officer') {
 
             $materials = collect(DB::select("SELECT * FROM `material`"));
-            $salesmen = UserApp::where('user_type','SALES_REP')->get();
+            $salesmen = UserApp::where('user_type', 'SALES_REP')->get();
 
-            return view('procurementofficer.allocation',compact('materials','salesmen'));
-
+            return view('procurementofficer.allocation', compact('materials', 'salesmen'));
         }
         if (Auth::user()->user_type == 'Manager') {
             $sales_rep = DB::table('sales_person')

@@ -10,7 +10,8 @@ class Customer extends Model
     use HasFactory;
     protected $primaryKey = 'customer_id';
     protected $table = 'customer';
-    // protected $filleble=['']
+    protected $fillable = ['customer_code', 'customer_name', 'customer_no', 'credit_limit', 'credit_exposure', 'repid', 'salesrep', 'route'];
+
     public $timestamps = false;
 
     public function salesman()

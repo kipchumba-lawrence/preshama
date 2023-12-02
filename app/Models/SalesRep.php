@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SalesRep extends Model
 {
     protected $table = 'sales_person';
-    protected $fillable = ['region'];
+    protected $fillable = ['region','first_name','repid'];
     protected $primaryKey = 'sales_person_id';
 
     use HasFactory;

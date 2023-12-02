@@ -38,11 +38,12 @@
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->user_type }}</td>
                                             <td>
+                                                <a id="edit-{{ $user->user_id }}" href="#" data-toggle="modal" data-target="#editUser" onclick="editUser({{json_encode($user)}});return false;">Edit</a> 
                                                 <form id="delete-form-{{ $user->user_id }}" action="{{ route('users.destroy',$user->user_id) }}" style="display: none;" method="post">
                                                     {{@csrf_field()}}
                                                     {{@method_field('DELETE')}}
                                                 </form>
-                                                <a data-toggle="tooltip"
+                                                {{-- <a data-toggle="tooltip"
                                                    onclick="
                                                        if(confirm('Are you sure you want to delete this user?'))
                                                        {event.preventDefault();
@@ -52,7 +53,8 @@
                                                        event.preventDefault();
                                                        }
                                                        "
-                                                ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle table-cancel"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></a></td>
+                                                >Delete</a> --}}
+                                            </td>
                                         </tr>
                                     @endif
                                 @endforeach
@@ -75,8 +77,85 @@
             </div>
         </div>
         <!--  END CONTENT PART  -->
+        
+<div id="editUser" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+             <div class="modal-header">
+                 <div class="card-title mb-3">Edit User</div>
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+             </div>
+             <div class="modal-body">
+                  <div class="col-md-12">
+                    <div class="card mb-4">
+                         <div class="card-body">
+                             <form role="form" method="post" action="{{ route('users.update.user',$user->user_id) }}">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="user_id" id="user_id">
+                                 <div class="form-row mb-4">
+                                <div class="form-group col-md-6">
+                                    <label for="firstname">First name</label>
+                                    <input type="text" class="form-control" placeholder="First name"
+                                           name="firstname"  id="firstname" value="{{ old('firstname') }}" required="required">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="secondname">Second name</label>
+                                    <input type="text" class="form-control" 
+                                           placeholder="Second name" name="secondname" id="secondname" value="{{ old('secondname') }}"
+                                           required="required">
+                                </div>
+                            </div>
+                            <div class="form-row mb-4">
+                                <div class="form-group col-md-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" 
+                                           placeholder="name@example.com" name="email" id="email" value="{{ old('email') }}"
+                                           required="required">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="role">Role</label>
+                                    <select class="form-control" required="required" name="role" id="role">
+                                        <option selected value="">Select role</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->user_role }}">{{ $role->user_role }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="password">Temporary password</label>
+                                <input type="password" class="form-control" 
+                                       placeholder="Temporary password" name="password" id="password" value="{{ old('password') }}"
+                                       required="required">
+                            </div>
+                                
+                                </br>
+                                
+                                 <button type="submit" class="btn btn-block btn-primary">Submit</button>
+                            </form>
+                         </div>
+                    </div>
+                  </div>
+             </div>
+                 
+        </div>
+    </div>
+</div>
     @endsection
     @section('footerSection')
+      <script type="text/javascript">
+            function editUser(user) {
+            //alert(user.first_name);
+                $("#user_id").val(user.user_id);
+                $("#role").val(user.user_type);
+                $('#firstname').val(user.first_name);
+                $('#secondname').val(user.surname);
+                $('#email').val(user.email);
+            }
+        </script>
+        
         <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
         <script>
             $('#zero-config').DataTable({

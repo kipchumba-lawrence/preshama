@@ -21,7 +21,7 @@ class ApproveOrders extends Controller
 
     //approved by credit manager
     public function approvedC(){
-        $orders = Order::where('credit_manager',Auth::user()->user_id)->whereNull('operations_manager')->get();
+        $orders = Order::where('credit_manager',Auth::user()->user_id)->get();
         return view('creditmanager.approved',compact('orders'));
     }
 

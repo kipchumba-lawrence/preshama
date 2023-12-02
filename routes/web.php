@@ -5,6 +5,7 @@ use App\Http\Controllers\Reports;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Hotfix;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\LoginReportController;
 
@@ -75,5 +76,6 @@ Route::post('users/update/User/{id}', [UsersController::class, 'update_user'])->
 // Hotfix Routes
 Route::get('update_customer_credit',[CustomersController::class, 'updateCustomersCredit'])->name('customers.update_customer_credit');
 // TODO: Create routes to update the products and the clients
+Route::get('system_update_west',[Hotfix::class, 'West'])->name('system_update_west');
 
 
