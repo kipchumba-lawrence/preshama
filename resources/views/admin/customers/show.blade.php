@@ -24,9 +24,10 @@
                                 tabindex="0" aria-controls="invoice-list"><span>Add
                                     New</span>
 
-                            </a> 
-                            <a class="mx-2 dt-button btn btn-primary btn-sm" href="{{ route('customers.update_customer_credit') }}"
-                                tabindex="0" aria-controls="invoice-list"><span >Refresh credit Scores</span>
+                            </a>
+                            <a class="mx-2 dt-button btn btn-primary btn-sm"
+                                href="{{ route('customers.update_customer_credit') }}" tabindex="0"
+                                aria-controls="invoice-list"><span>Refresh credit Scores</span>
 
                             </a>
                         </div>
@@ -63,14 +64,14 @@
                                                 </form>
                                                 <a data-toggle="tooltip" href="#"
                                                     onclick="
-                                                       if(confirm('Are you sure you want to delete this user?'))
+                                                       if(confirm('Are you sure you want to disable this user?'))
                                                        {event.preventDefault();
                                                        document.getElementById('delete-form-{{ $user->user_id }}').submit();
                                                        }
                                                        else{
                                                        event.preventDefault();
                                                        }
-                                                       ">Delete</a>
+                                                       ">Disable</a>
                                             </td>
                                         </tr>
                                     @endif

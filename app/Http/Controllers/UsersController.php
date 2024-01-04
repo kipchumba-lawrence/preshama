@@ -96,7 +96,7 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        User::where('user_id', $id)->delete();
+        User::where('user_id', $id)->update(['status' => 0]);
         return redirect()->back()->with('success', 'User deleted successfully');
     }
 }

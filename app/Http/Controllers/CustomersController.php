@@ -25,7 +25,7 @@ class CustomersController extends Controller
     {
         if (Auth::user()->user_type == 'Admin') {
             // $users = Customer::all();
-            $users = UserApp::where('user_type', 'USER')->get();
+            $users = UserApp::where('user_type', 'USER')->where('is_active',1)->get();
             return view('admin.customers.show', compact('users'));
         } else {
             return redirect()->route('home');
@@ -34,7 +34,7 @@ class CustomersController extends Controller
     public function index_sales()
     {
         if (Auth::user()->user_type == 'Admin') {
-            $users = UserApp::where('user_type', 'SALES_REP')->get();
+            $users = UserApp::where('user_type', 'SALES_REP')->where('is_active',1)->get();
             return view('admin.customers.show_rep', compact('users'));
         } else {
             return redirect()->route('home');
@@ -190,8 +190,9 @@ class CustomersController extends Controller
     public function destroy($id)
     {
         $user = UserApp::where('user_id', $id)->first();
-        $user->delete();
-        return redirect()->back()->with('success', "Successfully deleted");
+        $user->is_active = 0;
+        $user->save();
+        return redirect()->back()->with('success', "Successfully disbled");
     }
    public function updateCustomersCredit()
    {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Customer;
 use App\Models\SalesRep;
-use Illuminate\Http\Request;
+use App\Models\UserApp;
 
 class Hotfix extends Controller
 {
@@ -14,9 +14,10 @@ class Hotfix extends Controller
     function westCustomerRep()
     {
         $apiUrl = 'http://api.sajsoft.co.ke:96/api/customers/customers.php';
-        $ch = curl_init($apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
+        $curl = curl_init($apiUrl);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
 
         try {
             $apiResponse = json_decode($response, true);
@@ -25,8 +26,6 @@ class Hotfix extends Controller
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-
-        curl_close($ch);
     }
     function saveCustomers($apiResponse)
     {
@@ -44,25 +43,54 @@ class Hotfix extends Controller
                     'route' => $data['route'],
                 ]
             );
+            // Save to the user_app model with the correct creds
         }
     }
 
-function saveSalesReps($apiResponse)
-{
-    $uniqueReps = collect($apiResponse)
-        ->pluck('repid', 'salesrep')
-        ->unique();
+    function saveSalesReps($apiResponse)
+    {
+        // Handles west side
+        $uniqueReps = collect($apiResponse)
+            ->pluck('repid', 'salesrep')
+            ->unique();
 
-    $data = $uniqueReps->map(function ($repid, $salesRepName) {
-        return [
-            'repid' => $repid,
-            'first_name' => $salesRepName,
-            'region' => 'West',
-        ];
-    });
+        $data = $uniqueReps->map(function ($repid, $salesRepName) {
+            return [
+                'repid' => $repid,
+                'first_name' => $salesRepName,
+                'region' => 'West',
+            ];
+        });
 
-    SalesRep::upsert($data->toArray(), ['repid'], ['first_name', 'region']);
-}
+        // Update or create SalesRep records
+        $data->each(function ($rep) {
+            SalesRep::updateOrCreate(
+                ['repid' => $rep['repid']],
+                [
+                    'first_name' => $rep['first_name'],
+                    'region' => $rep['region'],
+                ]
+            );
+        });
+
+        // Save to the user_app model with the correct creds
+        foreach ($uniqueReps as $salesRepName => $repid) {
+            $username = str_replace(' ', '', $salesRepName) . '@preshama.com';
+            UserApp::updateOrCreate(
+                ['username' => $username],
+                [
+                    'first_name' => $salesRepName,
+                    'pin' => '0',
+                    'email' => $username,
+                    'user_type' => 'SALES_REP',
+                    'region' => 'West',
+                    'mobileno' => '-',
+                ]
+            );
+        }
+    }
+
+
 
 
     public function West()
