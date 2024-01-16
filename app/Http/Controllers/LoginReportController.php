@@ -12,7 +12,7 @@ class LoginReportController extends Controller
 {
     public function index()
     {
-        $loginrecords = LoginRecord::all();
+        $loginrecords = LoginRecord::orderBy('created_at', 'desc')->get();
         return view('Reports/LoginReport', compact('loginrecords'));
     }
 
