@@ -21,6 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/auth', [Payment::class, 'auth_token']);
+Route::post('/stkPush',[Payment::class,'stkPushAPI']);
 Route::get('/customer/{customer_id}', [API::class, 'getRegion']);
 Route::get('/sales-rep-customers/{sales_rep_id}', [APICustomerController::class, 'getCustomersPerSalesRep']);
-
