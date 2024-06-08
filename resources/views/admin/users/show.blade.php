@@ -51,14 +51,14 @@
                                                 </form>
                                                 <a data-toggle="tooltip"
                                                     onclick="
-                                                       if(confirm('Are you sure you want to delete this user?'))
+                                                       if(confirm('Are you sure you want to disable this user?'))
                                                        {event.preventDefault();
                                                        document.getElementById('delete-form-{{ $user->user_id }}').submit();
                                                        }
                                                        else{
                                                        event.preventDefault();
                                                        }
-                                                       ">Delete</a>
+                                                       ">Disable</a>
                                             </td>
                                         </tr>
                                     @endif
