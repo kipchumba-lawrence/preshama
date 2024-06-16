@@ -74,8 +74,9 @@ Route::post('customers/update/appUser/{id}', [CustomersController::class, 'updat
 Route::post('users/update/User/{id}', [UsersController::class, 'update_user'])->name('users.update.user');
 
 // Hotfix Routes
-Route::get('update_customer_credit',[CustomersController::class, 'updateCustomersCredit'])->name('customers.update_customer_credit');
+Route::get('update_customer_credit', [CustomersController::class, 'updateCustomersCredit'])->name('customers.update_customer_credit');
 // TODO: Create routes to update the products and the clients
-Route::get('system_update_west',[Hotfix::class, 'West'])->name('system_update_west');
-
-
+Route::get('system_update_west', [Hotfix::class, 'West'])->name('system_update_west');
+Route::get('fetch_categories', [Hotfix::class, 'fetchCategories'])->name('fetch_categories');
+Route::get('fetch_products', [Hotfix::class, 'fetchProducts'])->name('fetch_products');
+Route::get('fetch_clients', [Hotfix::class, 'fetchClients'])->name('fetch_clients');

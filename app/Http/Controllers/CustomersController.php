@@ -25,7 +25,7 @@ class CustomersController extends Controller
     {
         if (Auth::user()->user_type == 'Admin') {
             // $users = Customer::all();
-            $users = UserApp::where('user_type', 'USER')->where('is_active',1)->get();
+            $users = UserApp::where('user_type', 'USER')->where('is_active', 1)->get();
             return view('admin.customers.show', compact('users'));
         } else {
             return redirect()->route('home');
@@ -34,7 +34,7 @@ class CustomersController extends Controller
     public function index_sales()
     {
         if (Auth::user()->user_type == 'Admin') {
-            $users = UserApp::where('user_type', 'SALES_REP')->where('is_active',1)->get();
+            $users = UserApp::where('user_type', 'SALES_REP')->where('is_active', 1)->get();
             return view('admin.customers.show_rep', compact('users'));
         } else {
             return redirect()->route('home');
@@ -194,56 +194,56 @@ class CustomersController extends Controller
         $user->save();
         return redirect()->back()->with('success', "Successfully disbled");
     }
-   public function updateCustomersCredit()
-   {
-       // Add the JSON header to test
-   
-       try {
-           $curl = curl_init();
-   
-           curl_setopt_array($curl, array(
-               CURLOPT_URL => 'http://api.sajsoft.co.ke:96/api/customers/customers.php',
-               CURLOPT_RETURNTRANSFER => true,
-               CURLOPT_ENCODING => '',
-               CURLOPT_MAXREDIRS => 10,
-               CURLOPT_TIMEOUT => 0,
-               CURLOPT_FOLLOWLOCATION => true,
-               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-               CURLOPT_CUSTOMREQUEST => 'GET',
-               CURLOPT_HTTPHEADER => array(
-                   'Content-Type: application/json'
-               ),
-           ));
-   
-           $response = curl_exec($curl);
-           curl_close($curl);
-           dd($response);
-   
-           if ($response) {
-               $apiData = json_decode($response, true);
-   
-               foreach ($apiData as $data) {
-                   $customer = Customer::where('customer_code', $data['code'])->first();
-   
-                   if ($customer) {
-                       $customer->credit_limit = $data['creditlimit'];
-                       $customer->credit_exposure = $data['bal'];
-                       $customer->save();
-                   }
-               }
-   
-               Log::channel('customlog')->info('Customers credit updated successfully.');
-               return response()->json(['message' => 'Customers credit updated successfully.']);
-           } else {
-               Log::channel('customlog')->error('Failed to fetch data from the API.');
-               return response()->json(['error' => 'Failed to fetch data from the API.'], 500);
-           }
-       } catch (\Exception $e) {
-           Log::channel('customlog')->error('Update customer credit failed: ' . $e->getMessage());
-           return response()->json(['error' => 'An error occurred while updating customers credit: ' . $e->getMessage()], 500);
-       } catch (\Error $e) {
-           Log::channel('customlog')->error('Error updating customer credit: ' . $e->getMessage());
-           return response()->json(['error' => 'An error occurred while updating customers credit: ' . $e->getMessage()], 500);
-       }
-   }
+    public function updateCustomersCredit()
+    {
+        // Add the JSON header to test
+
+        try {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://api.sajsoft.co.ke:96/api/customers/customers.php',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+
+            if ($response) {
+                $apiData = json_decode($response, true);
+
+                foreach ($apiData as $data) {
+                    $customer = Customer::where('customer_code', $data['code'])->first();
+
+                    if ($customer) {
+                        $customer->credit_limit = $data['creditlimit'];
+                        $customer->credit_exposure = $data['bal'];
+                        $customer->save();
+                    }
+                }
+
+                Log::channel('customlog')->info('Customers credit updated successfully.');
+                return response()->json(['message' => 'Customers credit updated successfully.']);
+            } else {
+                Log::channel('customlog')->error('Failed to fetch data from the API.');
+                return response()->json(['error' => 'Failed to fetch data from the API.'], 500);
+            }
+        } catch (\Exception $e) {
+            Log::channel('customlog')->error('Update customer credit failed: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while updating customers credit: ' . $e->getMessage()], 500);
+        } catch (\Error $e) {
+            Log::channel('customlog')->error('Error updating customer credit: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while updating customers credit: ' . $e->getMessage()], 500);
+        }
+    }
 }

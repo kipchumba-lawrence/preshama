@@ -176,8 +176,4 @@ class Payment extends Controller
         // Return the API response
         return response()->json(['message' => 'Request accepted for processing', 'orderID' => $orderID, 'amount' => $amount, 'phone' => $phone]);
     }
-
-
-
-
 }
