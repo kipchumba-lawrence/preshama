@@ -23,6 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/auth', [Payment::class, 'auth_token']);
 Route::get('/customer/{customer_id}', [API::class, 'getRegion']);
 Route::get('/sales-rep-customers/{sales_rep_id}', [APICustomerController::class, 'getCustomersPerSalesRep']);
-Route::post('/stkPush', [Payment::class, 'stkPushAPI']);
+Route::get('/stkPush', [Payment::class, 'stkPushAPI']);
 Route::middleware('api.key')->group(function () {
 });
